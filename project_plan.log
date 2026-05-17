@@ -1,0 +1,301 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2026.5.17)  17 MAY 2026 13:52
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**./project_plan.tex
+(project_plan.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-04>
+
+(C:\Users\Administrator\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cl
+s
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+
+(C:\Users\Administrator\AppData\Local\Programs\MiKTeX\tex/latex/base\size11.clo
+File: size11.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count187
+\c@section=\count188
+\c@subsection=\count189
+\c@subsubsection=\count190
+\c@paragraph=\count191
+\c@subparagraph=\count192
+\c@figure=\count193
+\c@table=\count194
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\bibindent=\dimen140
+)
+(C:\Users\Administrator\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.s
+ty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks17
+\inpenc@posthook=\toks18
+)
+(C:\Users\Administrator\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.st
+y
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+)
+(C:\Users\Administrator\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3bac
+kend-pdftex.def
+File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count195
+\l__pdf_internal_box=\box51
+) (project_plan.aux)
+\openout1 = `project_plan.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 19.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 19.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 19.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 28.
+
+Underfull \hbox (badness 1596) in paragraph at lines 32--33
+[]\T1/cmr/m/n/10.95 Few step-s ear-ly in
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 32--33
+\T1/cmr/m/n/10.95 train-ing $\OMS/cmsy/m/n/10.95 !$ \T1/cmr/m/n/10.95 s-low
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 34--34
+[]\T1/cmr/m/n/10.95 Give neg-a-tive re-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 34--34
+[]\T1/cmr/m/n/10.95 Keeps play-ing $\OMS/cmsy/m/n/10.95 !$
+ []
+
+
+Underfull \hbox (badness 5374) in paragraph at lines 34--35
+[]\T1/cmr/m/n/10.95 Agent may ``far-m''
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 34--35
+\T1/cmr/m/n/10.95 neg-a-tive re-ward-s;
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--36
+[]\T1/cmr/m/n/10.95 No wast-ed step-s;
+ []
+
+
+Underfull \hbox (badness 1348) in paragraph at lines 36--37
+[]\T1/cmr/m/n/10.95 Complex im-ple-men-
+ []
+
+
+Underfull \hbox (badness 3291) in paragraph at lines 36--37
+\T1/cmr/m/n/10.95 ta-tion; must com-
+ []
+
+
+Underfull \hbox (badness 3713) in paragraph at lines 38--38
+[]\T1/cmr/m/n/10.95 Agent re-tries un-til
+ []
+
+
+Underfull \hbox (badness 5652) in paragraph at lines 38--39
+[]\T1/cmr/m/n/10.95 Can get s-tuck in
+ []
+
+
+Overfull \hbox (4.9013pt too wide) in paragraph at lines 27--41
+[] 
+ []
+
+
+Underfull \hbox (badness 5217) in paragraph at lines 51--51
+\T1/cmr/m/n/10.95 5: one-hot piece.
+ []
+
+
+Underfull \hbox (badness 4686) in paragraph at lines 51--52
+[]\T1/cmr/m/n/10.95 Small board (8x5)
+ []
+
+
+Underfull \hbox (badness 1629) in paragraph at lines 53--53
+[]\T1/cmr/m/n/10.95 Simple; work-s well
+ []
+
+
+Underfull \hbox (badness 5681) in paragraph at lines 53--54
+[]\T1/cmr/m/n/10.95 Loses s-pa-tial re-la-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--54
+\T1/cmr/m/n/10.95 tion-ship-s be-tween
+ []
+
+
+Underfull \hbox (badness 6625) in paragraph at lines 55--55
+[]\T1/cmr/m/n/10.95 Board as chan-nel,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 55--55
+\T1/cmr/m/n/10.95 shape ren-dered,
+ []
+
+
+Underfull \hbox (badness 4505) in paragraph at lines 55--56
+[]\T1/cmr/m/n/10.95 Largest ob-ser-va-tion
+ []
+
+
+Underfull \hbox (badness 3039) in paragraph at lines 55--56
+\T1/cmr/m/n/10.95 size; s-light-ly more
+ []
+
+
+Overfull \hbox (11.13829pt too wide) in paragraph at lines 46--58
+[] 
+ []
+
+[1
+
+{C:/Users/Administrator/AppData/Local/MiKTeX/2.9/fonts/map/pdftex/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 68--69
+[]\T1/cmr/m/n/10.95 Redundant ac-tion-s
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 70--70
+[]\T1/cmr/m/n/10.95 Internally d-edu-pli-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 107--107
+[]\T1/cmr/m/n/10.95 Well-understood;
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+[]\T1/cmr/m/n/10.95 State-of-the-art;
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/cmr/m/n/10.95 sta-ble; nat-u-ral-ly
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 111--111
+[]\T1/cmr/m/n/10.95 Synchronous actor-
+ []
+
+
+Underfull \hbox (badness 1642) in paragraph at lines 111--112
+[]\T1/cmr/m/n/10.95 Less sta-ble; high-er
+ []
+
+[2]
+Underfull \hbox (badness 5316) in paragraph at lines 124--124
+[]\T1/cmr/m/n/10.95 Flatten ob-ser-va-tion
+ []
+
+
+Underfull \hbox (badness 1874) in paragraph at lines 126--126
+[]\T1/cmr/m/n/10.95 2-3 con-v lay-er-s $\OMS/cmsy/m/n/10.95 !$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 128--129
+[]\T1/cmr/m/n/10.95 Most com-plex;
+ []
+
+
+Underfull \hbox (badness 1275) in paragraph at lines 143--143
+[]\T1/cmr/m/n/10.95 Agent pick-s out-of-
+ []
+
+
+Underfull \hbox (badness 2495) in paragraph at lines 143--143
+\T1/cmr/m/n/10.95 bounds or over-lap-
+ []
+
+
+Underfull \hbox (badness 3138) in paragraph at lines 158--158
+[]\T1/cmr/m/n/10.95 Agent sees cur-ren-t
+ []
+
+
+Underfull \hbox (badness 1810) in paragraph at lines 158--158
+[]\T1/cmr/m/n/10.95 Agent can plan a-
+ []
+
+
+Underfull \hbox (badness 3396) in paragraph at lines 160--160
+[]\T1/cmr/m/n/10.95 Agent sees cur-ren-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 160--160
+[]\T1/cmr/m/n/10.95 Simpler s-tate;
+ []
+
+[3]
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 2
+02.
+
+(C:\Users\Administrator\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
+File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+) [4] [5] [6] [7] (project_plan.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-04>
+ ***********
+ ) 
+Here is how much of TeX's memory you used:
+ 753 strings out of 476401
+ 12615 string characters out of 5793647
+ 1940542 words of memory out of 5000000
+ 22852 multiletter control sequences out of 15000+600000
+ 569245 words of font info for 59 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 35i,9n,50p,380b,273s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\Administrator\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec
+/dpi600\ectt1095.pk> <C:\Users\Administrator\AppData\Local\MiKTeX\2.9\fonts/pk/
+ljfour/jknappen/ec/dpi600\tcrm1095.pk> <C:\Users\Administrator\AppData\Local\Mi
+KTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1095.pk> <C:\Users\Administrato
+r\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1095.pk> <C:\
+Users\Administrator\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600
+\ecrm1095.pk> <C:\Users\Administrator\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/
+jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\Administrator\AppData\Local\MiKTeX\2.
+9\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\Administrator\AppDa
+ta\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\A
+dministrator\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx17
+28.pk><C:/Users/Administrator/AppData/Local/Programs/MiKTeX/fonts/type1/public/
+amsfonts/cm/cmmi10.pfb><C:/Users/Administrator/AppData/Local/Programs/MiKTeX/fo
+nts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Administrator/AppData/Local/Pr
+ograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on project_plan.pdf (7 pages, 159875 bytes).
+PDF statistics:
+ 414 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+
