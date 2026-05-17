@@ -24,7 +24,6 @@ import torch
 
 from member_a.agent import PPOAgent, PPOConfig
 from member_a.environment import BrainBlockEnv
-from common.pieces import encode_action, decode_action, ORIENT_TABLE, PIECE_IDX
 from common.visualize import render_board, render_episode_replay
 
 
@@ -45,6 +44,8 @@ def parse_args():
                         help="Number of distinct solutions to render")
     parser.add_argument("--render-trace", action="store_true",
                         help="Render step-by-step trace for one episode")
+    parser.add_argument("--no-masking", action="store_true",
+                        help="Disable action masking (for failure-mode evaluation)")
     return parser.parse_args()
 
 
@@ -112,10 +113,10 @@ def evaluate(args):
         piece_history = []
 
         while not done:
-            # Deterministic: argmax
             grid = torch.tensor(obs["grid"], device=device).unsqueeze(0)
             vec = torch.tensor(obs["vec"], device=device).unsqueeze(0)
-            mask = torch.tensor(action_mask.astype(np.float32), device=device).unsqueeze(0)
+            eff_mask = np.ones(320, dtype=np.float32) if args.no_masking else action_mask.astype(np.float32)
+            mask = torch.tensor(eff_mask, device=device).unsqueeze(0)
 
             dist, _ = agent.network(grid, vec, mask)
             action = dist.probs.argmax(dim=-1).item()
@@ -193,40 +194,7 @@ def evaluate(args):
     for i in range(n_render):
         placed = solution_list[i]
         save_path = str(out_dir / f"solution_{i+1}.png")
-        render_board(placed, title=f"Solution #{i+1}", show=False)
-        # Need to use matplotlib directly to save
-        import matplotlib.pyplot as plt
-        fig, ax = plt.subplots(figsize=(8, 5))
-        from common.pieces import PIECE_COLORS, PIECE_TYPES
-        import matplotlib.patches as mpatches
-
-        color_grid = [[PIECE_COLORS[None]] * 8 for _ in range(5)]
-        for piece_type, cells in placed:
-            for cx, cy in cells:
-                color_grid[cy][cx] = PIECE_COLORS[piece_type]
-
-        for row in range(5):
-            for col in range(8):
-                rect = mpatches.FancyBboxPatch(
-                    (col, 4 - row), 1, 1,
-                    boxstyle="round,pad=0.05",
-                    facecolor=color_grid[row][col],
-                    edgecolor="white", linewidth=2,
-                )
-                ax.add_patch(rect)
-        ax.set_xlim(0, 8)
-        ax.set_ylim(0, 5)
-        ax.set_aspect("equal")
-        ax.axis("off")
-        legend_patches = [
-            mpatches.Patch(color=PIECE_COLORS[p], label=p) for p in PIECE_TYPES
-        ]
-        ax.legend(handles=legend_patches, loc="upper right", fontsize=9,
-                  bbox_to_anchor=(1.12, 1))
-        ax.set_title(f"Solution #{i+1}", fontsize=11)
-        plt.tight_layout()
-        plt.savefig(save_path, dpi=150, bbox_inches="tight")
-        plt.close(fig)
+        render_board(placed, title=f"Solution #{i+1}", show=False, save_path=save_path)
         print(f"  Saved: {save_path}")
 
     # ── Render step-by-step trace ──────────────────────────────────

@@ -149,7 +149,6 @@ def train(args):
     action_mask = info["action_mask"]
     ep_reward = 0.0
     ep_length = 0
-    ep_invalid_count = 0
 
     num_updates = args.total_timesteps // args.rollout_steps
     print(f"Total updates: {num_updates}, rollout steps: {args.rollout_steps}")

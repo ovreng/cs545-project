@@ -18,6 +18,7 @@ def render_board(
     title: str = "BrainBlock",
     ax: Optional[plt.Axes] = None,
     show: bool = True,
+    save_path: Optional[str] = None,
 ) -> Optional[np.ndarray]:
     """
     Render the board state from a list of placed pieces.
@@ -27,6 +28,7 @@ def render_board(
         title: plot title
         ax: optional matplotlib axes to draw on
         show: if True, display the plot
+        save_path: if provided, save figure to this path
 
     Returns:
         RGB image array if ax was None, else None.
@@ -67,6 +69,8 @@ def render_board(
     plt.tight_layout()
 
     if own_fig:
+        if save_path:
+            plt.savefig(save_path, dpi=150, bbox_inches="tight")
         if show:
             plt.show()
         fig.canvas.draw()
@@ -128,7 +132,7 @@ def render_episode_replay(
         ax.axis("off")
         ax.set_title(f"Step {i+1}: {piece_type}", fontsize=8)
 
-    for j in range(i + 1, len(axes)):
+    for j in range(len(board_snapshots), len(axes)):
         axes[j].axis("off")
 
     plt.suptitle("Episode Replay", fontsize=12)
