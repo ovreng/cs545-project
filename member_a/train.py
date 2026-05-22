@@ -53,6 +53,8 @@ def parse_args():
                         help="Hidden layer dimension")
     parser.add_argument("--no-masking", action="store_true",
                         help="Disable action masking (for failure-mode analysis)")
+    parser.add_argument("--diversity-bonus", type=float, default=0.0,
+                        help="Extra reward added when agent finds a tiling it has never seen before (0=off)")
     parser.add_argument("--log-interval", type=int, default=10,
                         help="Print stats every N updates")
     parser.add_argument("--save-interval", type=int, default=50,
@@ -68,7 +70,8 @@ def make_output_dir(args) -> Path:
         out = Path(args.output_dir)
     else:
         mask_tag = "nomask" if args.no_masking else "mask"
-        name = f"{args.encoder}_{args.reward}_{mask_tag}_seed{args.seed}"
+        div_tag = f"_div{args.diversity_bonus:.2f}".rstrip("0").rstrip(".") if args.diversity_bonus > 0 else ""
+        name = f"{args.encoder}_{args.reward}_{mask_tag}_seed{args.seed}{div_tag}"
         out = Path("results") / name
     out.mkdir(parents=True, exist_ok=True)
     return out
@@ -83,6 +86,9 @@ def set_seed(seed: int):
 
 
 def train(args):
+    import sys
+    sys.stdout.reconfigure(line_buffering=True)
+
     set_seed(args.seed)
 
     device = torch.device("cuda" if torch.cuda.is_available() else
@@ -128,7 +134,7 @@ def train(args):
         "update", "timestep", "episode", "mean_reward", "mean_length",
         "success_rate", "mean_coverage", "invalid_rate",
         "policy_loss", "value_loss", "entropy", "approx_kl",
-        "wall_time",
+        "unique_tilings", "wall_time",
     ])
 
     # Training state
@@ -136,6 +142,12 @@ def train(args):
     episode_count = 0
     update_count = 0
     start_time = time.time()
+
+    # Diversity tracking: set of frozenset tilings seen during training
+    seen_tilings: set = set()
+    discovered_tilings: list = []  # saved to disk at end of training
+
+    best_success_rate = 0.0
 
     # Episode trackers (for logging window)
     ep_rewards = []
@@ -168,6 +180,25 @@ def train(args):
 
             next_obs, reward, terminated, truncated, next_info = env.step(action)
             done = terminated or truncated
+
+            # Track unique tilings; optionally augment reward for novel ones
+            if terminated and next_info.get("termination_reason") == "success":
+                tiling_key = frozenset(
+                    (pt, frozenset(cells)) for pt, cells in env._placed
+                )
+                if tiling_key not in seen_tilings:
+                    seen_tilings.add(tiling_key)
+                    discovered_tilings.append({
+                        "tiling_id": len(discovered_tilings) + 1,
+                        "episode": episode_count,
+                        "global_step": global_step,
+                        "placed": [
+                            {"piece": pt, "cells": sorted(list(cells))}
+                            for pt, cells in env._placed
+                        ],
+                    })
+                    if args.diversity_bonus > 0:
+                        reward += args.diversity_bonus
 
             agent.buffer.add(
                 obs["grid"], obs["vec"], mask_for_agent.astype(np.float32),
@@ -232,18 +263,24 @@ def train(args):
                 f"{update_stats['value_loss']:.6f}",
                 f"{update_stats['entropy']:.4f}",
                 f"{update_stats['approx_kl']:.6f}",
+                len(seen_tilings),
                 f"{wall_time:.1f}",
             ])
             csv_file.flush()
 
+            if success_rate > best_success_rate:
+                best_success_rate = success_rate
+                agent.save(str(out_dir / "best_model.pt"))
+
             print(
                 f"Update {update:5d} | Step {global_step:>8,} | Ep {episode_count:>6,} | "
                 f"R={mean_reward:+.3f} | Len={mean_length:.1f} | "
-                f"Succ={success_rate:.3f} | Cov={mean_coverage:.3f} | "
-                f"Inv={invalid_rate:.3f} | "
+                f"Succ={success_rate:.3f} [best={best_success_rate:.3f}] | "
+                f"Cov={mean_coverage:.3f} | Inv={invalid_rate:.3f} | "
                 f"PL={update_stats['policy_loss']:.4f} | "
                 f"VL={update_stats['value_loss']:.4f} | "
                 f"Ent={update_stats['entropy']:.3f} | "
+                f"UniqueT={len(seen_tilings):3d} | "
                 f"t={wall_time:.0f}s"
             )
 
@@ -255,6 +292,10 @@ def train(args):
     # Final save
     agent.save(str(out_dir / "final_model.pt"))
     csv_file.close()
+
+    # Save discovered tilings to JSON
+    with open(out_dir / "discovered_tilings.json", "w") as f:
+        json.dump(discovered_tilings, f, indent=2)
 
     # Save episode-level data for plotting
     np.savez(
@@ -270,6 +311,7 @@ def train(args):
     print("=" * 70)
     print(f"Training complete: {episode_count:,} episodes, {global_step:,} steps in {elapsed:.1f}s")
     print(f"Final success rate: {np.mean(ep_successes[-100:]):.4f}")
+    print(f"Unique tilings discovered: {len(seen_tilings)}")
     print(f"Model saved to: {out_dir / 'final_model.pt'}")
 
 

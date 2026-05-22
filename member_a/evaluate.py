@@ -46,6 +46,10 @@ def parse_args():
                         help="Render step-by-step trace for one episode")
     parser.add_argument("--no-masking", action="store_true",
                         help="Disable action masking (for failure-mode evaluation)")
+    parser.add_argument("--stochastic", action="store_true",
+                        help="Sample from policy distribution instead of argmax (more diverse solutions)")
+    parser.add_argument("--temperature", type=float, default=1.0,
+                        help="Softmax temperature for sampling (>1 = more uniform, implies --stochastic)")
     return parser.parse_args()
 
 
@@ -119,7 +123,13 @@ def evaluate(args):
             mask = torch.tensor(eff_mask, device=device).unsqueeze(0)
 
             dist, _ = agent.network(grid, vec, mask)
-            action = dist.probs.argmax(dim=-1).item()
+            if args.temperature != 1.0:
+                from torch.distributions import Categorical
+                action = Categorical(logits=dist.logits / args.temperature).sample().item()
+            elif args.stochastic:
+                action = dist.sample().item()
+            else:
+                action = dist.probs.argmax(dim=-1).item()
 
             next_obs, reward, terminated, truncated, next_info = env.step(action)
             done = terminated or truncated
@@ -187,6 +197,16 @@ def evaluate(args):
     # Save results
     with open(out_dir / "eval_results.json", "w") as f:
         json.dump(results, f, indent=2)
+
+    # Save unique solutions as JSON for later visualization
+    solutions_json = [
+        {"solution_id": i + 1,
+         "placed": [{"piece": pt, "cells": sorted([list(c) for c in cells])}
+                    for pt, cells in placed]}
+        for i, placed in enumerate(unique_solutions.values())
+    ]
+    with open(out_dir / "eval_solutions.json", "w") as f:
+        json.dump(solutions_json, f, indent=2)
 
     # ── Render distinct solutions ──────────────────────────────────
     n_render = min(args.render_solutions, len(unique_solutions))
