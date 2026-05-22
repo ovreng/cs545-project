@@ -343,6 +343,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description="BrainBlock Pygame Demo")
     parser.add_argument("--model", type=str, default=None,
                         help="Path to trained model checkpoint")
+    parser.add_argument("--algo", type=str, default="ppo", choices=["ppo", "sac"],
+                        help="Algorithm: ppo (default) or sac")
     parser.add_argument("--encoder", type=str, default="mlp",
                         choices=["mlp", "cnn_mlp"])
     parser.add_argument("--hidden-dim", type=int, default=256)
@@ -354,6 +356,8 @@ def parse_args():
                         help="Fixed seed (random each episode if not set)")
     parser.add_argument("--speed", type=float, default=1.0,
                         help="Auto-play delay in seconds")
+    parser.add_argument("--stochastic", action="store_true",
+                        help="Sample from policy instead of argmax (more diverse episodes)")
     return parser.parse_args()
 
 
@@ -363,19 +367,29 @@ def main():
     # ── Determine mode ────────────────────────────────────────────
     agent = None
     solver_moves = None
+    is_sac = False
 
     if args.solver:
         mode_label = "SOLVER"
     elif args.random:
         mode_label = "RANDOM"
     elif args.model:
-        mode_label = "PPO MODEL"
         device = torch.device("cpu")
-        config = PPOConfig(encoder_type=args.encoder, hidden_dim=args.hidden_dim)
-        agent = PPOAgent(config, device)
-        agent.load(args.model)
-        agent.network.eval()
-        print(f"Loaded model: {args.model}")
+        if args.algo == "sac":
+            from member_a.sac_agent import SACAgent, SACConfig
+            is_sac = True
+            config = SACConfig(encoder_type=args.encoder, hidden_dim=args.hidden_dim)
+            agent = SACAgent(config, device)
+            agent.load(args.model)
+            agent.actor.eval()
+            mode_label = f"SAC ({'stoch' if args.stochastic else 'det'})"
+        else:
+            config = PPOConfig(encoder_type=args.encoder, hidden_dim=args.hidden_dim)
+            agent = PPOAgent(config, device)
+            agent.load(args.model)
+            agent.network.eval()
+            mode_label = f"PPO ({'stoch' if args.stochastic else 'det'})"
+        print(f"Loaded {args.algo.upper()} model: {args.model}")
     else:
         print("Error: specify --model, --random, or --solver")
         sys.exit(1)
@@ -383,7 +397,7 @@ def main():
     # ── Pygame init ───────────────────────────────────────────────
     pygame.init()
     screen = pygame.display.set_mode((WIN_W, WIN_H))
-    pygame.display.set_caption("BrainBlock — PPO Demo")
+    pygame.display.set_caption("BrainBlock — Agent Demo")
     clock = pygame.time.Clock()
 
     # ── Environment ───────────────────────────────────────────────
@@ -476,7 +490,7 @@ def main():
         # ── Auto-play ─────────────────────────────────────────────
         if auto_play and not done and time.time() - last_auto_time >= speed:
             new_cells = _do_step(env, agent, action_mask, obs,
-                                 solver_moves, step_count, args)
+                                 solver_moves, step_count, args, is_sac)
             obs_result = _post_step(env)
             obs, action_mask, step_count, total_reward, status, done, new_cells = (
                 _update_state(env, obs, action_mask, step_count,
@@ -517,19 +531,28 @@ def main():
 
 # ── Step helpers ───────────────────────────────────────────────────────
 
-def _do_step(env, agent, action_mask, obs, solver_moves, step_count, args):
+def _do_step(env, agent, action_mask, obs, solver_moves, step_count, args, is_sac=False):
     """Choose and execute one action. Returns new_cells."""
     if args.solver and solver_moves and step_count < len(solver_moves):
         orient, x, y = solver_moves[step_count]
         action = encode_action(orient, x, y)
     elif agent is not None:
-        # PPO model — deterministic (argmax)
         with torch.no_grad():
             grid = torch.tensor(obs["grid"]).unsqueeze(0)
-            vec = torch.tensor(obs["vec"]).unsqueeze(0)
+            vec  = torch.tensor(obs["vec"]).unsqueeze(0)
             mask = torch.tensor(action_mask.astype(np.float32)).unsqueeze(0)
-            dist, _ = agent.network(grid, vec, mask)
-            action = dist.probs.argmax(dim=-1).item()
+            if is_sac:
+                probs, _ = agent.actor(grid, vec, mask)
+                if args.stochastic:
+                    action = torch.multinomial(probs, 1).squeeze().item()
+                else:
+                    action = probs.argmax(dim=-1).item()
+            else:
+                dist, _ = agent.network(grid, vec, mask)
+                if args.stochastic:
+                    action = dist.sample().item()
+                else:
+                    action = dist.probs.argmax(dim=-1).item()
     else:
         # Random legal action
         legal = np.where(action_mask)[0]
