@@ -110,9 +110,9 @@ def _build_orientations(
 
 
 # Per-piece reflection policy:
-#   L: reflection excluded — mirror gives J, not in inventory
-#   Z: reflection excluded — mirror gives S, not in inventory
-_INCLUDE_REFLECTION = {"I": True, "O": True, "L": False, "Z": False, "T": True}
+#   L: reflection included — physical piece can be flipped (gives J orientations)
+#   Z: reflection included — physical piece can be flipped (gives S orientations)
+_INCLUDE_REFLECTION = {"I": True, "O": True, "L": True, "Z": True, "T": True}
 
 # Pre-compute orientation tables at import time
 # ORIENT_TABLE[piece_type][orient_idx] = frozenset of (dx,dy) or None

@@ -74,8 +74,8 @@ def render_board(
         if show:
             plt.show()
         fig.canvas.draw()
-        img = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
-        img = img.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+        buf = fig.canvas.buffer_rgba()
+        img = np.asarray(buf)[:, :, :3].copy()
         plt.close(fig)
         return img
 
