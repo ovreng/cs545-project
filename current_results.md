@@ -31,4 +31,4 @@ The sparse reward function makes discovering the optimal tangram configuration e
 
 Because epsilon decay limits exploration heavily in the later stages (decaying to ~0.15 by episode 4500), the agent converges on strong suboptimal strategies (achieving ~77% board coverage consistently). To achieve a high, robust success rate, the model requires the full `500,000+` episodes requested in the assignment outline, allowing for extended exploration and a much wider replay buffer.
 
-> *Note: The full learning curves will be generated using `python -m member_b.plot_curves` once all seeds finish.*
+> *Note: The full learning curves will be generated using `python -m member_goktug.plot_curves` once all seeds finish.*

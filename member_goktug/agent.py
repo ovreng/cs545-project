@@ -1,7 +1,7 @@
 """
 DQN Agent for BrainBlock (Member B2).
 
-Improvements over member_b:
+Improvements over member_goktug baseline:
   - Preallocated numpy replay buffer (500K capacity, no Python object overhead)
   - Selectable encoder type (mlp / cnn_mlp)
   - Timestep-based epsilon decay
