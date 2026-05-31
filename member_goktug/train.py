@@ -6,7 +6,7 @@ Supports dual reward modes, selectable encoder, unique tiling tracking,
 best-model saving, and CSV metrics compatible with Member A.
 
 Usage:
-  python -m member_b2.train --reward shaped --encoder mlp --seed 42 --total-timesteps 2000000
+  python -m member_goktug.train --reward shaped --encoder mlp --seed 42 --total-timesteps 2000000
 """
 
 from __future__ import annotations
@@ -22,8 +22,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from member_b2.agent import DQNAgent
-from member_b2.environment import BrainBlockEnv
+from member_goktug.agent import DQNAgent
+from member_goktug.environment import BrainBlockEnv
 
 
 def parse_args():

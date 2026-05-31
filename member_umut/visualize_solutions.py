@@ -2,7 +2,7 @@
 Visualize all tilings discovered during training.
 
 Usage:
-  python -m member_a.visualize_solutions \
+  python -m member_umut.visualize_solutions \
       --tilings results/mlp_shaped_mask_seed42/discovered_tilings.json \
       --output  results/mlp_shaped_mask_seed42/solutions/
 """

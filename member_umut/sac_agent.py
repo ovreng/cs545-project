@@ -28,7 +28,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from member_a.network import MLPEncoder, CNNMLPEncoder
+from member_umut.network import MLPEncoder, CNNMLPEncoder
 
 
 # ---------------------------------------------------------------------------

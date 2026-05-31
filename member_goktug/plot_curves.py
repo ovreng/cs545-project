@@ -5,8 +5,8 @@ Reads episode_data.npz files from results directories and generates
 publication-quality learning curve plots.
 
 Usage:
-  python -m member_b2.plot_curves --results-dir results --pattern "dqn_*"
-  python -m member_b2.plot_curves --results-dir results/dqn_shaped_mlp_seed42
+  python -m member_goktug.plot_curves --results-dir results --pattern "dqn_*"
+  python -m member_goktug.plot_curves --results-dir results/dqn_shaped_mlp_seed42
 """
 
 from __future__ import annotations

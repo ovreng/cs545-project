@@ -9,8 +9,8 @@ Controls:
   Q / ESC              — quit
 
 Run:
-  python -m member_a.play
-  python -m member_a.play --seed 7
+  python -m member_umut.play
+  python -m member_umut.play --seed 7
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ from collections import Counter
 import numpy as np
 import pygame
 
-from member_a.environment import BrainBlockEnv
+from member_umut.environment import BrainBlockEnv
 from common.pieces import (
     PIECE_TYPES, PIECE_COLORS, ORIENT_TABLE, VALID_ORIENTS,
     encode_action, is_legal,

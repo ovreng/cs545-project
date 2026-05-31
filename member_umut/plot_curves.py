@@ -2,8 +2,8 @@
 Plot learning curves from training metrics.
 
 Usage:
-  python -m member_a.plot_curves --results-dir results/mlp_shaped_mask_seed42
-  python -m member_a.plot_curves --compare results/mlp_shaped_mask_seed42 results/mlp_sparse_mask_seed42
+  python -m member_umut.plot_curves --results-dir results/mlp_shaped_mask_seed42
+  python -m member_umut.plot_curves --compare results/mlp_shaped_mask_seed42 results/mlp_sparse_mask_seed42
 """
 
 from __future__ import annotations

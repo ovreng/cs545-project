@@ -18,7 +18,7 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
-from member_b2.network import QNetwork
+from member_goktug.network import QNetwork
 
 
 # ---------------------------------------------------------------------------

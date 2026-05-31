@@ -3,13 +3,13 @@ Pygame Live Demo — Watch the PPO agent solve BrainBlock step by step.
 
 Usage:
   # With a trained model:
-  python -m member_a.demo --model results/mlp_shaped_mask_seed42/final_model.pt --encoder mlp
+  python -m member_umut.demo --model results/mlp_shaped_mask_seed42/final_model.pt --encoder mlp
 
   # Without a model (random agent — useful for testing the visualization):
-  python -m member_a.demo --random
+  python -m member_umut.demo --random
 
   # With backtracking solver (perfect play):
-  python -m member_a.demo --solver
+  python -m member_umut.demo --solver
 
 Controls:
   SPACE / ENTER  — Next step (when paused)
@@ -30,8 +30,8 @@ import numpy as np
 import pygame
 import torch
 
-from member_a.environment import BrainBlockEnv
-from member_a.agent import PPOAgent, PPOConfig
+from member_umut.environment import BrainBlockEnv
+from member_umut.agent import PPOAgent, PPOConfig
 from common.pieces import (
     PIECE_TYPES, PIECE_IDX, PIECE_COLORS, ORIENT_TABLE,
     decode_action, encode_action, VALID_ORIENTS,
@@ -376,7 +376,7 @@ def main():
     elif args.model:
         device = torch.device("cpu")
         if args.algo == "sac":
-            from member_a.sac_agent import SACAgent, SACConfig
+            from member_umut.sac_agent import SACAgent, SACConfig
             is_sac = True
             config = SACConfig(encoder_type=args.encoder, hidden_dim=args.hidden_dim)
             agent = SACAgent(config, device)

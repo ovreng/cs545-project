@@ -2,7 +2,7 @@
 Evaluation script for BrainBlock DQN (Member B2).
 
 Usage:
-  python -m member_b2.evaluate --model results/dqn_shaped_mlp_seed42/best_model.pt \
+  python -m member_goktug.evaluate --model results/dqn_shaped_mlp_seed42/best_model.pt \
                                 --encoder mlp --reward shaped --episodes 1000 --seed 42
 
 Features:
@@ -24,8 +24,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from member_b2.agent import DQNAgent
-from member_b2.environment import BrainBlockEnv
+from member_goktug.agent import DQNAgent
+from member_goktug.environment import BrainBlockEnv
 from common.visualize import render_board, render_episode_replay
 
 

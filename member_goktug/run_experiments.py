@@ -1,23 +1,21 @@
 """
-Run all experiments from the experiment matrix (§3.3 of ppo_action_plan).
+Run all DQN experiments for Member B2.
 
-| # | Encoder | Reward  | Masking | Seeds |
-|---|---------|---------|---------|-------|
-| 1 | MLP     | sparse  | Yes     | 5     |
-| 2 | MLP     | shaped  | Yes     | 5     |
-| 3 | CNN+MLP | sparse  | Yes     | 5     |
-| 4 | CNN+MLP | shaped  | Yes     | 5     |
-| 5 | MLP     | shaped  | No      | 5     |
+| # | Encoder | Reward  | Seeds |
+|---|---------|---------|-------|
+| 1 | MLP     | sparse  | 5     |
+| 2 | MLP     | shaped  | 5     |
+| 3 | CNN+MLP | shaped  | 5     |
 
 Usage:
-  # Run all 25 experiments
-  python -m member_a.run_experiments --total-timesteps 5000000
+  # Run all 15 experiments
+  python -m member_goktug.run_experiments --total-timesteps 2000000
 
-  # Quick sanity check (short run)
-  python -m member_a.run_experiments --total-timesteps 50000 --configs 2
+  # Quick sanity check
+  python -m member_goktug.run_experiments --total-timesteps 50000 --configs 2
 
-  # Run a single config
-  python -m member_a.run_experiments --total-timesteps 5000000 --configs 4 --seeds 42
+  # Single config + seed
+  python -m member_goktug.run_experiments --total-timesteps 2000000 --configs 2 --seeds 42
 """
 
 from __future__ import annotations
@@ -25,23 +23,20 @@ from __future__ import annotations
 import argparse
 import subprocess
 import sys
-from itertools import product
 
 
 SEEDS = [42, 123, 456, 789, 1024]
 
 CONFIGS = [
-    {"id": 1, "encoder": "mlp",     "reward": "sparse", "masking": True,  "desc": "MLP sparse masked"},
-    {"id": 2, "encoder": "mlp",     "reward": "shaped", "masking": True,  "desc": "MLP shaped masked"},
-    {"id": 3, "encoder": "cnn_mlp", "reward": "sparse", "masking": True,  "desc": "CNN+MLP sparse masked"},
-    {"id": 4, "encoder": "cnn_mlp", "reward": "shaped", "masking": True,  "desc": "CNN+MLP shaped masked"},
-    {"id": 5, "encoder": "mlp",     "reward": "shaped", "masking": False, "desc": "MLP shaped NO MASK (failure mode)"},
+    {"id": 1, "encoder": "mlp",     "reward": "sparse", "desc": "MLP sparse (R1)"},
+    {"id": 2, "encoder": "mlp",     "reward": "shaped", "desc": "MLP shaped (R2)"},
+    {"id": 3, "encoder": "cnn_mlp", "reward": "shaped", "desc": "CNN+MLP shaped (R2)"},
 ]
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Run BrainBlock PPO experiments")
-    parser.add_argument("--total-timesteps", type=int, default=5_000_000)
+    parser = argparse.ArgumentParser(description="Run BrainBlock DQN experiments")
+    parser.add_argument("--total-timesteps", type=int, default=2_000_000)
     parser.add_argument("--configs", nargs="+", type=int, default=None,
                         help="Config IDs to run (default: all)")
     parser.add_argument("--seeds", nargs="+", type=int, default=None,
@@ -61,29 +56,28 @@ def main():
     seeds = args.seeds or SEEDS
 
     total_runs = len(configs_to_run) * len(seeds)
-    print(f"=== BrainBlock PPO Experiment Runner ===")
+    print(f"=== BrainBlock DQN Experiment Runner (Member B2) ===")
     print(f"Configs: {[c['id'] for c in configs_to_run]}")
     print(f"Seeds: {seeds}")
     print(f"Total runs: {total_runs}")
     print(f"Timesteps per run: {args.total_timesteps:,}")
-    print("=" * 50)
+    print("=" * 55)
 
     run_idx = 0
     for config in configs_to_run:
         for seed in seeds:
             run_idx += 1
-            mask_tag = "nomask" if not config["masking"] else "mask"
-            run_name = f"{config['encoder']}_{config['reward']}_{mask_tag}_seed{seed}"
+            reward_short = "r1" if config["reward"] == "sparse" else "r2"
+            run_name = f"dqn_{reward_short}_{config['encoder']}_seed{seed}"
 
             cmd = [
-                sys.executable, "-m", "member_a.train",
+                sys.executable, "-m", "member_goktug.train",
                 "--reward", config["reward"],
                 "--encoder", config["encoder"],
                 "--seed", str(seed),
                 "--total-timesteps", str(args.total_timesteps),
+                "--output-dir", f"results/{run_name}"
             ]
-            if not config["masking"]:
-                cmd.append("--no-masking")
 
             print(f"\n[{run_idx}/{total_runs}] {config['desc']} | seed={seed}")
             print(f"  → {run_name}")
@@ -99,7 +93,7 @@ def main():
             else:
                 print(f"  ✅ Done")
 
-    print("\n" + "=" * 50)
+    print("\n" + "=" * 55)
     print("All experiments completed.")
 
 

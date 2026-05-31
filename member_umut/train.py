@@ -2,7 +2,7 @@
 Training script for BrainBlock PPO.
 
 Usage:
-  python -m member_a.train --reward shaped --encoder mlp --seed 42 --episodes 500000
+  python -m member_umut.train --reward shaped --encoder mlp --seed 42 --episodes 500000
 
 Logs metrics to CSV and optionally to console.
 Checkpoints are saved periodically.
@@ -20,8 +20,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from member_a.agent import PPOAgent, PPOConfig
-from member_a.environment import BrainBlockEnv
+from member_umut.agent import PPOAgent, PPOConfig
+from member_umut.environment import BrainBlockEnv
 
 
 def parse_args():

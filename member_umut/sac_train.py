@@ -2,7 +2,7 @@
 Training script for BrainBlock Discrete SAC.
 
 Usage:
-  python -m member_a.sac_train --reward shaped --encoder mlp --seed 42
+  python -m member_umut.sac_train --reward shaped --encoder mlp --seed 42
 
 Key differences from PPO train.py:
   - Off-policy: replay buffer (500K) instead of rollout buffer
@@ -22,8 +22,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from member_a.sac_agent import SACAgent, SACConfig
-from member_a.environment import BrainBlockEnv
+from member_umut.sac_agent import SACAgent, SACConfig
+from member_umut.environment import BrainBlockEnv
 
 
 def parse_args():

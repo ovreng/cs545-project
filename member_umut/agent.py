@@ -21,7 +21,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from member_a.network import ActorCritic
+from member_umut.network import ActorCritic
 
 
 @dataclass

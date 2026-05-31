@@ -40,7 +40,7 @@ eval_ppo() {
     fi
     local STOCH_FLAG=""
     [ "$MODE" = "stochastic" ] && STOCH_FLAG="--stochastic"
-    python -m member_a.evaluate \
+    python -m member_umut.evaluate \
         --model "$MODEL_PATH" \
         --encoder "$ENCODER" \
         --reward "$REWARD" \
@@ -64,7 +64,7 @@ eval_sac() {
     fi
     local STOCH_FLAG=""
     [ "$MODE" = "stochastic" ] && STOCH_FLAG="--stochastic"
-    python -m member_a.sac_evaluate \
+    python -m member_umut.sac_evaluate \
         --model "$MODEL_PATH" \
         --encoder "$ENCODER" \
         --reward "$REWARD" \
@@ -84,7 +84,7 @@ echo ""
 # 1. PPO R2 MLP — temiz baseline
 # ─────────────────────────────────────────────────────────────
 log "1/5  TRAIN  PPO R2 MLP  (2M, no-div)"
-python -m member_a.train \
+python -m member_umut.train \
     --reward shaped \
     --encoder mlp \
     --seed $SEED \
@@ -111,7 +111,7 @@ eval_ppo results/ppo_r2_mlp_seed42/best_model.pt mlp shaped \
 # 2. PPO R2 MLP + Diversity Bonus
 # ─────────────────────────────────────────────────────────────
 log "2/5  TRAIN  PPO R2 MLP  (2M, div=1.0)"
-python -m member_a.train \
+python -m member_umut.train \
     --reward shaped \
     --encoder mlp \
     --seed $SEED \
@@ -139,7 +139,7 @@ eval_ppo results/ppo_r2_mlp_div1_seed42/best_model.pt mlp shaped \
 # 3. PPO R1 MLP — sparse reward karşılaştırması
 # ─────────────────────────────────────────────────────────────
 log "3/5  TRAIN  PPO R1 MLP  (2M, sparse, no-div)"
-python -m member_a.train \
+python -m member_umut.train \
     --reward sparse \
     --encoder mlp \
     --seed $SEED \
@@ -166,7 +166,7 @@ eval_ppo results/ppo_r1_mlp_seed42/best_model.pt mlp sparse \
 # 4. PPO R2 CNN+MLP — mimari karşılaştırması
 # ─────────────────────────────────────────────────────────────
 log "4/5  TRAIN  PPO R2 CNN+MLP  (3M, lr=1e-4, no-div)"
-python -m member_a.train \
+python -m member_umut.train \
     --reward shaped \
     --encoder cnn_mlp \
     --seed $SEED \
@@ -193,7 +193,7 @@ eval_ppo results/ppo_r2_cnn_seed42/best_model.pt cnn_mlp shaped \
 # 5. SAC R2 MLP — off-policy karşılaştırma (en sonda)
 # ─────────────────────────────────────────────────────────────
 log "5/5  TRAIN  SAC R2 MLP  (5M, buffer=1M, batch=512)"
-python -m member_a.sac_train \
+python -m member_umut.sac_train \
     --reward shaped \
     --encoder mlp \
     --seed $SEED \

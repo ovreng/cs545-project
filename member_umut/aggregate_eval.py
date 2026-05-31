@@ -3,7 +3,7 @@ Aggregate evaluation results across multiple seeds into a summary table.
 
 Usage:
   # Aggregate one config (e.g. MLP shaped masked, seeds 42 123 456 789 1024):
-  python -m member_a.aggregate_eval \\
+  python -m member_umut.aggregate_eval \\
       --dirs results/mlp_shaped_mask_seed42/eval \\
              results/mlp_shaped_mask_seed123/eval \\
              results/mlp_shaped_mask_seed456/eval \\
@@ -12,7 +12,7 @@ Usage:
       --label "MLP shaped masked"
 
   # Compare all 5 configs at once (after running all experiments + evals):
-  python -m member_a.aggregate_eval --all-configs
+  python -m member_umut.aggregate_eval --all-configs
 """
 
 from __future__ import annotations
