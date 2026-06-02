@@ -9,7 +9,7 @@ venv/
 .DS_Store
 
 # Model binaries (large files — commit metrics/configs only)
-*.pt
+#*.pt
 *.npz
 
 # Logs & temp
