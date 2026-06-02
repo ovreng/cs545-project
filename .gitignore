@@ -8,8 +8,8 @@ venv/
 # macOS
 .DS_Store
 
-# Model binaries (large files — commit metrics/configs only)
-*.pt
+# Model binaries — checkpoints excluded, best/final models tracked
+checkpoint_*.pt
 *.npz
 
 # Logs & temp
