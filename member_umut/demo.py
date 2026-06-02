@@ -343,8 +343,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description="BrainBlock Pygame Demo")
     parser.add_argument("--model", type=str, default=None,
                         help="Path to trained model checkpoint")
-    parser.add_argument("--algo", type=str, default="ppo", choices=["ppo", "sac"],
-                        help="Algorithm: ppo (default) or sac")
+    parser.add_argument("--algo", type=str, default="ppo", choices=["ppo", "dqn", "sac"],
+                        help="Algorithm: ppo (default), dqn, or sac")
     parser.add_argument("--encoder", type=str, default="mlp",
                         choices=["mlp", "cnn_mlp"])
     parser.add_argument("--hidden-dim", type=int, default=256)
@@ -375,7 +375,14 @@ def main():
         mode_label = "RANDOM"
     elif args.model:
         device = torch.device("cpu")
-        if args.algo == "sac":
+        if args.algo == "dqn":
+            from member_goktug.agent import DQNAgent
+            agent = DQNAgent(encoder_type=args.encoder, hidden_dim=args.hidden_dim, device="cpu")
+            agent.load(args.model)
+            agent.q_net.eval()
+            # DQN is always deterministic (argmax); --stochastic adds ε=0.05
+            mode_label = "DQN (ε=0.05)" if args.stochastic else "DQN (det, ε=0)"
+        elif args.algo == "sac":
             from member_umut.sac_agent import SACAgent, SACConfig
             is_sac = True
             config = SACConfig(encoder_type=args.encoder, hidden_dim=args.hidden_dim)
@@ -541,7 +548,14 @@ def _do_step(env, agent, action_mask, obs, solver_moves, step_count, args, is_sa
             grid = torch.tensor(obs["grid"]).unsqueeze(0)
             vec  = torch.tensor(obs["vec"]).unsqueeze(0)
             mask = torch.tensor(action_mask.astype(np.float32)).unsqueeze(0)
-            if is_sac:
+            if args.algo == "dqn":
+                epsilon = 0.05 if args.stochastic else 0.0
+                action = agent.act(
+                    {"grid": obs["grid"], "vec": obs["vec"]},
+                    action_mask,
+                    epsilon=epsilon,
+                )
+            elif is_sac:
                 probs, _ = agent.actor(grid, vec, mask)
                 if args.stochastic:
                     action = torch.multinomial(probs, 1).squeeze().item()
